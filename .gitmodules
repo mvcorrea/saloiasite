@@ -1,0 +1,3 @@
+[submodule "react_boilerplate"]
+	path = client
+	url = https://github.com/mvcorrea/react_boilerplate.git
