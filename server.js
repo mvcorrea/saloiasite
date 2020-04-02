@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const fs = require("fs");
 const port = process.env.PORT || 5001;
 
 // react production path
@@ -15,7 +14,7 @@ app.use("/api", require("./api"));
 // React Content, it only reaches here if does not match any prior line
 const indexPage = react_static + "index.html";
 app.get("*", (req, res) => {
-  fs.existsSync(indexPage) ? res.sendFile(indexPage) : res.sendStatus(404);
+  res.sendFile(indexPage) || res.sendStatus(404);
 });
 
 app.listen(port, () =>
