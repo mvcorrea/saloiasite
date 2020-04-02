@@ -1,5 +1,5 @@
 {
-  "name": "Express_Boilerplate",
+  "name": "express_app",
   "version": "1.0.0",
   "main": "server.js",
   "license": "MIT",
