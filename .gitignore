@@ -4,3 +4,4 @@ dist
 build
 .devlog*
 trash
+.old

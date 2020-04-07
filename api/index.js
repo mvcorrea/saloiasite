@@ -1,25 +1,28 @@
-const api = require("express").Router();
-const time = require("./time");
+const db = require("./models");
+const saloia = require("./controller");
+const router = require("express").Router();
 
-api.get("/docs", (req, res) => {
-  res.json({
-    apiName: "sample API",
-    apiVersion: "1.0.0",
-    apiPath: "http://localhost:5001/api",
-    apiOutput: "application/json",
-    apiEndpoits: [
-      {
-        path: "/about",
-        operations: [{ method: "GET", summary: "", notes: "", parameters: [] }]
-      },
-      {
-        path: "/time",
-        operations: [{ method: "GET", summary: "", notes: "", parameters: [] }]
-      }
-    ]
-  });
+
+db.sequelize.sync();
+// db.sequelize
+//   .sync({ force: true })
+//   .then(() => console.log("Drop and re-sync db."));
+
+router.get("/", (req, res) => {
+  res.json({ message: "Welcome to Saloia API." });
 });
 
-api.get("/time", time.gettime);
+// Create a new User
+router.post("/user", saloia.create);
+// Retrieve all Users
+router.get("/user", saloia.findAll);
+// Find one User
+router.get("/user/:id", saloia.findOne);
+// Update a User with id
+router.put("/user/:id", saloia.update);
+// Retrieve all active users
+router.get("/users/active", saloia.findAllActive);
 
-module.exports = api;
+
+
+module.exports = router;
