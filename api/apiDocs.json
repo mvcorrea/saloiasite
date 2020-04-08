@@ -1,0 +1,22 @@
+{
+  "message": "Welcome to Saloia API.",
+  "example": "https://dev.to/akshendra/generating-documentation-on-the-fly-in-express-2652",
+  "endpoints": {
+    "user": [
+      {
+        "path": "/api/user",
+        "method": "GET",
+        "summary": "get all users",
+        "parameters": "",
+        "responses": { "201": { "schema": "type object", "properties": "" } }
+      },
+      {
+        "path": "/api/user",
+        "method": "POST",
+        "summary": "create a new user",
+        "parameters": "",
+        "responses": ""
+      }
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 const request = require("supertest");
-const app = require("./server");
-//const db = require("./api/controller");
+const app = require("../server");
+const db = require("../api/models");
 
 // must disable logging in all code (sequelize)
 
@@ -16,16 +16,35 @@ describe("API testing", () => {
     expect(res.body).toEqual({ message: "Welcome to Saloia API." });
   });
 
-//   test("mocking a new user", async () => {
-//     const mockUser = {
-//       userId: "U.00000000",
-//       userPhone: "9999999999999",
-//       userName: "Sample User",
-//     };
-//       //const users = db.create.insertOne;
-//       await db.create.insertOne(mockUser);
-      
-//   });
+  test("mocking a new user", async () => {
+    const mockUser = {
+      userId: "U.00000000",
+      userPhone: "9999999999999",
+      userName: "Sample User",
+    };
+    const users = db.saloia.Users;
+    // creating a user
+    await users.create(mockUser);
+    // verifying th user creation
+    const insertedUser = await users.findOne({ userId: "U.00000000" });
+    expect(mockUser.userPhone).toEqual(insertedUser.userPhone);
+  
+    // updating a user
+    mockUser.userPhone = "8888888888888";
+    await users.update(mockUser, { where: { userId: "U.00000000" } });
+    // verifying the updated user
+    const editedUser = await users.findOne({ userId: "U.00000000" });
+    expect(mockUser.userPhone).toEqual(editedUser.userPhone);
+
+    // deleting a user
+    await users.destroy({ where: { userId: "U.00000000" } });
+    // verifying the deleted
+    const deletedUser = await users.findOne({ userId: "U.00000000" }); 
+    expect(deletedUser).toBeNull();
+    
+    //expect(insertedUser).toEqual(mockUser);
+    // claro que nao pode, apos inserção são adicionados novos dados!!!!!!!!!!!!!!
+  });
 
   test("Creating a new User", async () => {
     const res = await request(app).post("/api/user").send({

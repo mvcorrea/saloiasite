@@ -30,6 +30,7 @@ module.exports = (sequelize, Sequelize) => {
       userActive: {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
+        allowNull: false,
         required: true,
       },
       userLstMsg: {
