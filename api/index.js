@@ -12,19 +12,19 @@ db.sequelize.sync();
 router.get("/", (req, res) => res.json(docs));
 
 // Create a new User
-router.post("/user", saloia.user.create);
+router.post("/user", saloia.user.createUser);
 // Retrieve all Users
-router.get("/user", saloia.user.findAll);
+router.get("/user", saloia.user.findAllUsers);
 // Find one User
-router.get("/user/:id", saloia.user.findOne);
+router.get("/user/:id", saloia.user.findUser);
 // Update a User with id
-router.put("/user/:id", saloia.user.update);
+router.put("/user/:id", saloia.user.updateUser);
 // Delete a User
-router.delete("/user/:id", saloia.user.delete);
+router.delete("/user/:id", saloia.user.deleteUser);
 // Delete all Users
-router.delete("/user", saloia.user.deleteAll)
+router.delete("/user", saloia.user.deleteAllUsers)
 // Retrieve all active users
-router.get("/users/active", saloia.user.findAllActive);
+router.get("/users/active", saloia.user.findAllActiveUsers);
 
 
 // Error: catch all

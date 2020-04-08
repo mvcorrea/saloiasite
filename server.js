@@ -21,12 +21,6 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-
-
-// index.js from within the folder api resolves all requests
-//app.use("/api", require("./api")(app));
-//require("./api")(app)
 app.use("/api", api);
 
 // React Content, it only reaches here if does not match any prior line
@@ -35,10 +29,4 @@ app.get("*", (req, res) => {
   res.sendFile(indexPage) || res.sendStatus(404);
 });
 
-
 module.exports = app;
-
-
-// app.listen(port, () =>
-//   console.log("app listening on http://localhost:" + port)
-// );

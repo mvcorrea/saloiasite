@@ -4,8 +4,9 @@ const Saloia = db.saloia;
 const Op = db.Sequelize.Op;
 
 // Create a new user
-exports.create = (req, res, next) => {
+exports.createUser = (req, res, next) => {
   const user = {
+    userId: req.body.id,
     userPhone: req.body.phone,
     userName: req.body.name,
     userAddr: req.body.addr,
@@ -21,17 +22,20 @@ exports.create = (req, res, next) => {
 };
 
 // List any/all users
-exports.findAll = (req, res, next) => {
-
+exports.findAllUsers = (req, res, next) => {
   const { phone, active, last } = req.query;
   let options = { where: {} };
 
   phone ? (options.where.userPhone = { [Op.like]: `%${phone}%` }) : null; // string
   active ? (options.where.userActive = tmp = active === "true") : null; // boolean
-  last ? (options.where.userLstMsg = {[Op.gt]: moment().subtract(last, 'hours').toDate()}) : null; 
+  last
+    ? (options.where.userLstMsg = {
+        [Op.gt]: moment().subtract(last, "hours").toDate(),
+      })
+    : null;
 
-  console.log("phone:" + phone +" active:"+ active + " last:"+ last)
-  console.log(options);
+  //console.log("phone:" + phone +" active:"+ active + " last:"+ last)
+  //console.log(options);
 
   Saloia.Users.findAll(options)
     .then((data) => res.send(data))
@@ -42,7 +46,7 @@ exports.findAll = (req, res, next) => {
 };
 
 // Find a single user with an id
-exports.findOne = (req, res, next) => {
+exports.findUser = (req, res, next) => {
   const userId = req.params.id;
 
   Saloia.Users.findByPk(userId)
@@ -56,7 +60,7 @@ exports.findOne = (req, res, next) => {
 };
 
 // Update a user by the id in the request
-exports.update = (req, res, next) => {
+exports.updateUser = (req, res, next) => {
   const id = req.params.id;
 
   Saloia.Users.update(req.body, {
@@ -68,6 +72,8 @@ exports.update = (req, res, next) => {
           message: "User was updated successfully.",
         });
       } else {
+        //console.log(id + " num:"+ num);
+        //console.log(req.body);
         res.send({
           message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`,
         });
@@ -80,11 +86,11 @@ exports.update = (req, res, next) => {
 };
 
 // Delete a user with the specified id in the request
-exports.delete = (req, res, next) => {
+exports.deleteUser = (req, res, next) => {
   const id = req.params.id;
 
   Saloia.Users.destroy({
-    where: { id: id },
+    where: { userId: id },
   })
     .then((num) => {
       if (num == 1) {
@@ -104,7 +110,7 @@ exports.delete = (req, res, next) => {
 };
 
 // Delete all Users from the database.
-exports.deleteAll = (req, res, next) => {
+exports.deleteAllUsers = (req, res, next) => {
   Saloia.Users.destroy({
     where: {},
     truncate: false,
@@ -119,8 +125,8 @@ exports.deleteAll = (req, res, next) => {
 };
 
 // find all published User
-exports.findAllActive = (req, res, next) => {
-  Tutorial.findAll({ where: { userActive: true } })
+exports.findAllActiveUsers = (req, res, next) => {
+  Saloia.Users.findAll({ where: { userActive: true } })
     .then((data) => {
       res.send(data);
     })
