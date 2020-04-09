@@ -1,6 +1,6 @@
 const moment = require("moment");
 const db = require("../models");
-const Saloia = db.saloia;
+const Users = db.saloia.Users;
 const Op = db.Sequelize.Op;
 
 // Create a new user
@@ -13,7 +13,7 @@ exports.createUser = (req, res, next) => {
     userActive: req.body.active,
     userLstMsg: req.body.last,
   };
-  Saloia.Users.create(user)
+  Users.create(user)
     .then((data) => res.status(201).send(data))
     .catch((err) => {
       err.status = 500;
@@ -37,7 +37,7 @@ exports.findAllUsers = (req, res, next) => {
   //console.log("phone:" + phone +" active:"+ active + " last:"+ last)
   //console.log(options);
 
-  Saloia.Users.findAll(options)
+  Users.findAll(options)
     .then((data) => res.send(data))
     .catch((err) => {
       err.status = 500;
@@ -49,7 +49,7 @@ exports.findAllUsers = (req, res, next) => {
 exports.findUser = (req, res, next) => {
   const userId = req.params.id;
 
-  Saloia.Users.findByPk(userId)
+  Users.findByPk(userId)
     .then((data) => {
       res.send(data);
     })
@@ -63,7 +63,7 @@ exports.findUser = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
   const id = req.params.id;
 
-  Saloia.Users.update(req.body, {
+  Users.update(req.body, {
     where: { userId: id },
   })
     .then((num) => {
@@ -89,7 +89,7 @@ exports.updateUser = (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
   const id = req.params.id;
 
-  Saloia.Users.destroy({
+  Users.destroy({
     where: { userId: id },
   })
     .then((num) => {
@@ -111,7 +111,7 @@ exports.deleteUser = (req, res, next) => {
 
 // Delete all Users from the database.
 exports.deleteAllUsers = (req, res, next) => {
-  Saloia.Users.destroy({
+  Users.destroy({
     where: {},
     truncate: false,
   })
@@ -126,7 +126,7 @@ exports.deleteAllUsers = (req, res, next) => {
 
 // find all published User
 exports.findAllActiveUsers = (req, res, next) => {
-  Saloia.Users.findAll({ where: { userActive: true } })
+  Users.findAll({ where: { userActive: true } })
     .then((data) => {
       res.send(data);
     })
